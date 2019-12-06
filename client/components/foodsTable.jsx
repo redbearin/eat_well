@@ -1,19 +1,19 @@
 import React from 'react';
-import Grade from './grade';
+import Food from './food';
 
-function GradeTable(props) {
-  if (props.ArrayOfStudents !== []) {
-    var studentElements = props.arrayOfStudents.map(student => {
-      return <Grade key={student.id} specificStudent={student} delete={props.delete} />;
+function FoodsTable(props) {
+  if (props.ArrayOfFoods !== []) {
+    var studentElements = props.arrayOfFoods.map(food => {
+      return <Food key={food.id} specificFood={food} delete={props.delete} />;
     });
     return (
       <div className="table-responsive col-sm-8">
         <table className="table table-bordered table-hover table-striped">
           <thead className='bg-success text-light'>
             <tr>
-              <td scope="col" className="border border-dark">Food</td>
-              <td scope="col" className="border border-dark">Type</td>
-              <td scope="col" className="border border-dark">Grade</td>
+              <td scope="col" className="border border-dark">Food Name</td>
+              <td scope="col" className="border border-dark">Production Type</td>
+              <td scope="col" className="border border-dark">Health Grade</td>
               <td scope="col" className="border border-dark">Operations</td>
             </tr>
           </thead>
@@ -27,9 +27,9 @@ function GradeTable(props) {
         <table className="table table-bordered table-hover">
           <thead className='bg-primary'>
             <tr>
-              <td scope="col">Food</td>
-              <td scope="col">Type</td>
-              <td scope="col">Grade</td>
+              <td scope="col">Food Name</td>
+              <td scope="col">ProductType</td>
+              <td scope="col">Health Grade</td>
             </tr>
           </thead>
           <tbody>No grades Recorded</tbody>
@@ -44,4 +44,4 @@ function GradeTable(props) {
   }
 }
 
-export default GradeTable;
+export default FoodsTable;

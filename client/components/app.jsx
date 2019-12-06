@@ -1,52 +1,69 @@
 import React from 'react';
 import Header from './header';
-import GradeTable from './gradeTable';
-import GradeForm from './gradeForm';
+import FoodsTable from './foodsTable';
+import FoodEntryForm from './foodEntryForm';
 import Modal from './modal';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      grades: [],
+      foods: [],
       modalOpen: true
     };
-    this.getGrades = this.getGrades.bind(this);
-    this.addGrade = this.addGrade.bind(this);
-    this.deleteGrade = this.deleteGrade.bind(this);
+    this.getFoods = this.getFoods.bind(this);
+    this.addFood = this.addFood.bind(this);
+    this.deleteFood = this.deleteFood.bind(this);
   }
 
   componentDidMount() {
-    this.getGrades();
+    this.getFoods();
   }
 
-  getGrades() {
+  getFoods() {
     fetch('/api/grades')
       .then(response => response.json())
-      .then(studentRecords => {
+      .then(data => {
         this.setState({
-          grades: studentRecords
+          foods: data
         });
         this.getAverageGrade();
       });
   }
 
-  addGrade(newGrade) {
+  // getFoods() {
+  //   const data = {
+  //     method: 'POST',
+  //     body: JSON.stringify({
+  //     }),
+  //     headers: { 'Content-Type': 'application/json' }
+  //   };
+  //   fetch(`/api/foods.php`, data)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         foods: data
+  //       });
+  //     })
+  //     .catch(error => { throw (error); });
+  // }
+
+  addFood(newFood) {
     const request = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newGrade)
+      body: JSON.stringify(newFood)
     };
     fetch('/api/grades', request)
       .then(response => response.json())
-      .then(newGrade => {
-        const allGrades = this.state.grades.concat(newGrade);
+      .then(data => {
+        const allFoods = this.state.foods.concat(newFood);
         this.setState({
-          grades: allGrades
+          foods: allFoods
         });
       });
   }
-  deleteGrade(idToRemove) {
+  deleteFood(idToRemove) {
     const request = {
       method: 'DELETE'
     };
@@ -61,10 +78,10 @@ class App extends React.Component {
 
   getAverageGrade() {
     let sum = 0;
-    this.state.grades.forEach(element => {
+    this.state.foods.forEach(element => {
       sum += element.grade;
     });
-    return (sum / this.state.grades.length).toFixed(2);
+    return (sum / this.state.foods.length).toFixed(2);
   }
 
   closeModal() {
@@ -79,8 +96,8 @@ class App extends React.Component {
         <div className='container' style={{ display: this.state.modalOpen ? 'none' : 'block' }}>
           <Header averageGrade={this.getAverageGrade()}/>
           <div className="row">
-            <GradeTable arrayOfStudents={this.state.grades} delete={this.deleteGrade}/>
-            <GradeForm onSubmit={this.addGrade}/>
+            <FoodsTable arrayOfFoods={this.state.foods} delete={this.deleteFood}/>
+            <FoodEntryForm onSubmit={this.addFood}/>
           </div>
         </div>
         <Modal open={this.state.modalOpen}>
