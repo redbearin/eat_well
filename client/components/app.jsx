@@ -20,33 +20,33 @@ class App extends React.Component {
     this.getFoods();
   }
 
-  getFoods() {
-    fetch('/api/grades')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          foods: data
-        });
-        this.getAverageGrade();
-      });
-  }
-
   // getFoods() {
-  //   const data = {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //     }),
-  //     headers: { 'Content-Type': 'application/json' }
-  //   };
-  //   fetch(`/api/foods.php`, data)
+  //   fetch('/api/grades')
   //     .then(response => response.json())
   //     .then(data => {
   //       this.setState({
   //         foods: data
   //       });
-  //     })
-  //     .catch(error => { throw (error); });
+  //       this.getAverageGrade();
+  //     });
   // }
+
+  getFoods() {
+    const data = {
+      method: 'POST',
+      body: JSON.stringify({
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch(`/api/foods.php`, data)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          foods: data
+        });
+      })
+      .catch(error => { throw (error); });
+  }
 
   addFood(newFood) {
     const request = {
