@@ -11,7 +11,9 @@ function FoodsTable(props) {
         <table className="table table-bordered table-hover table-striped">
           <thead className='bg-success text-light'>
             <tr>
-              <td scope="col" className="border border-dark">Food Name</td>
+              <td scope="col" className="border border-dark">Name</td>
+              <td scope="col" className="border border-dark">Subname</td>
+              <td scope="col" className="border border-dark">Category</td>
               <td scope="col" className="border border-dark">Production Type</td>
               <td scope="col" className="border border-dark">Health Grade</td>
               <td scope="col" className="border border-dark">Operations</td>
@@ -27,8 +29,10 @@ function FoodsTable(props) {
         <table className="table table-bordered table-hover">
           <thead className='bg-primary'>
             <tr>
-              <td scope="col">Food Name</td>
-              <td scope="col">ProductType</td>
+              <td scope="col">Name</td>
+              <td scope="col">Subname</td>
+              <td scope="col">Category</td>
+              <td scope="col">Production Type</td>
               <td scope="col">Health Grade</td>
             </tr>
           </thead>

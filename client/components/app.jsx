@@ -20,17 +20,6 @@ class App extends React.Component {
     this.getFoods();
   }
 
-  // getFoods() {
-  //   fetch('/api/grades')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.setState({
-  //         foods: data
-  //       });
-  //       this.getAverageGrade();
-  //     });
-  // }
-
   getFoods() {
     const data = {
       method: 'POST',
@@ -63,6 +52,7 @@ class App extends React.Component {
         });
       });
   }
+
   deleteFood(idToRemove) {
     const request = {
       method: 'DELETE'
@@ -71,7 +61,7 @@ class App extends React.Component {
       .then(response => response.json())
       .then(() => {
         this.setState({
-          grades: this.state.grades.filter(element => element.id !== idToRemove)
+          foods: this.state.foods.filter(element => element.id !== idToRemove)
         });
       });
   }
@@ -79,7 +69,7 @@ class App extends React.Component {
   getAverageGrade() {
     let sum = 0;
     this.state.foods.forEach(element => {
-      sum += element.grade;
+      sum += parseInt(element.grade);
     });
     return (sum / this.state.foods.length).toFixed(2);
   }
