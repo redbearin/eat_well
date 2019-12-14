@@ -1,5 +1,5 @@
 {
-  "name": "eat_well",
+  "name": "eat-well",
   "version": "1.0.0",
   "description": "Food Health Rating App: Written in React",
   "main": "server/index.js",
