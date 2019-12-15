@@ -38,19 +38,18 @@ class App extends React.Component {
   }
 
   addFood(newFood) {
-    const request = {
+    const data = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newFood)
     };
-    fetch('/api/grades', request)
-      .then(response => response.json())
-      .then(data => {
-        const allFoods = this.state.foods.concat(newFood);
-        this.setState({
-          foods: allFoods
-        });
-      });
+    fetch('/api/add-food.php', data)
+      .catch(error => { throw (error); });
+
+    const allFoods = this.state.foods.concat(newFood);
+    this.setState({
+      foods: allFoods
+    });
   }
 
   deleteFood(idToRemove) {
