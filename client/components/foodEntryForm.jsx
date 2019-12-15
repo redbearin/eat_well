@@ -1,17 +1,22 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAppleAlt, faStar, faListAlt } from '@fortawesome/free-solid-svg-icons';
+import { faAppleAlt, faStar, faListAlt, faLeaf } from '@fortawesome/free-solid-svg-icons';
+import './foodEntryForm.css';
 
 class FoodEntryForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      type: '',
+      sub_name: '',
+      category: '',
+      production_type: '',
       grade: ''
     };
     this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleSubNameChange = this.handleSubNameChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleGradeChange = this.handleGradeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
@@ -21,9 +26,19 @@ class FoodEntryForm extends React.Component {
       name: event.target.value
     });
   }
+  handleSubNameChange(event) {
+    this.setState({
+      sub_name: event.target.value
+    });
+  }
+  handleCategoryChange(event) {
+    this.setState({
+      category: event.target.value
+    });
+  }
   handleTypeChange(event) {
     this.setState({
-      type: event.target.value
+      production_type: event.target.value
     });
   }
   handleGradeChange(event) {
@@ -37,19 +52,24 @@ class FoodEntryForm extends React.Component {
     this.props.onSubmit(newFood);
     this.setState({
       name: '',
-      type: '',
+      sub_name: '',
+      category: '',
+      production_type: '',
       grade: ''
     });
   }
   handleCancel(event) {
     this.setState({
       name: '',
-      type: '',
+      sub_name: '',
+      category: '',
+      production_type: '',
       grade: ''
     });
   }
   render() {
-    var typeChoices = ['Conventional', 'Organic', 'Non GMO Verified'];
+    var typeChoices = ['Conventional', 'Organic', 'Non GMO Verified', 'Farmed (Fish)', 'Wild Caught'];
+    var categoryChoices = ['bakery item', 'beverage', 'confectionary', 'dairy product', 'egg', 'fat', 'fish', 'fruit', 'meat', 'prepared food', 'spice', 'sweetener', 'vegetable'];
     return (
       <form className="col-sm-4 container" onSubmit={this.handleSubmit}>
 
@@ -58,17 +78,38 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faAppleAlt}/>
           </div>
           <div className="col-10 block">
-            <input required autoFocus type="text" value={this.state.name} className="form-control mb-2" placeholder="food name" onChange={this.handleNameChange}/>
+            <input required autoFocus type="text" value={this.state.name} className="form-control mb-2" placeholder="name" onChange={this.handleNameChange}/>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="lightColor col-2 pt-2">
+            <FontAwesomeIcon icon={faAppleAlt}/>
+          </div>
+          <div className="col-10 block">
+            <input required autoFocus type="text" value={this.state.sub_name} className="form-control mb-2" placeholder="subname" onChange={this.handleSubNameChange}/>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-2 pt-2">
+            <FontAwesomeIcon icon={faListAlt}/>
+          </div>
+          <div className="col-10 block">
+            <select name="category" onChange={this.handleCategoryChange} defaultValue={this.state.category}>
+              <option>Category</option>
+              {categoryChoices.map((category, index) => (<option key={index} value={category}>{category}</option>))}
+            </select>
           </div>
         </div>
 
         <div className="row mt-1">
           <div className="col-2 pt-2">
-            <FontAwesomeIcon icon={faListAlt} />
+            <FontAwesomeIcon icon={faLeaf} />
           </div>
           <div className="col-10">
-            <select name="type" onChange={this.handleTypeChange} defaultValue={this.state.type}>
-              <option>Select Type</option>
+            <select name="type" onChange={this.handleTypeChange} defaultValue={this.state.production_type}>
+              <option>Production Type</option>
               {typeChoices.map((type, index) => (<option key={index} value={type}>{type}</option>))}
             </select>
           </div>
