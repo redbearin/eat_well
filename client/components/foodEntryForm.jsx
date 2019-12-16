@@ -11,45 +11,31 @@ class FoodEntryForm extends React.Component {
       sub_name: '',
       category: '',
       production_type: '',
-      grade: ''
+      grade: '',
+      shown: ''
     };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleSubNameChange = this.handleSubNameChange.bind(this);
-    this.handleTypeChange = this.handleTypeChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handleGradeChange = this.handleGradeChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
-  handleNameChange(event) {
-    this.setState({
-      name: event.target.value
-    });
+
+  handleChange(event) {
+    if (event.target.name === 'grade') {
+      this.setState({
+        grade: parseInt(event.target.value)
+      });
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+    }
   }
-  handleSubNameChange(event) {
-    this.setState({
-      sub_name: event.target.value
-    });
-  }
-  handleCategoryChange(event) {
-    this.setState({
-      category: event.target.value
-    });
-  }
-  handleTypeChange(event) {
-    this.setState({
-      production_type: event.target.value
-    });
-  }
-  handleGradeChange(event) {
-    this.setState({
-      grade: parseInt(event.target.value)
-    });
-  }
+
   handleSubmit(event) {
     event.preventDefault();
     const newFood = this.state;
     this.props.onSubmit(newFood);
+    event.target.reset();
     this.setState({
       name: '',
       sub_name: '',
@@ -58,6 +44,7 @@ class FoodEntryForm extends React.Component {
       grade: ''
     });
   }
+
   handleCancel(event) {
     this.setState({
       name: '',
@@ -67,9 +54,10 @@ class FoodEntryForm extends React.Component {
       grade: ''
     });
   }
+
   render() {
     var typeChoices = ['Conventional', 'Organic', 'Non GMO Verified', 'Farmed (Fish)', 'Wild Caught'];
-    var categoryChoices = ['bakery item', 'beverage', 'confectionary', 'dairy product', 'egg', 'fat', 'fish', 'fruit', 'meat', 'prepared food', 'spice', 'sweetener', 'vegetable'];
+    var categoryChoices = ['bakery item', 'beverage', 'confectionary', 'dairy product', 'egg', 'fat', 'fish', 'fruit', 'grain', 'meat', 'prepared food', 'spice', 'sweetener', 'vegetable'];
     return (
       <form className="col-sm-4 container" onSubmit={this.handleSubmit}>
 
@@ -78,7 +66,7 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faAppleAlt}/>
           </div>
           <div className="col-10 block">
-            <input required autoFocus type="text" value={this.state.name} className="form-control mb-2" placeholder="name" onChange={this.handleNameChange}/>
+            <input required autoFocus type="text" value={this.state.name} className="form-control mb-2" placeholder="name" name="name" onChange={this.handleChange}/>
           </div>
         </div>
 
@@ -87,7 +75,7 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faAppleAlt}/>
           </div>
           <div className="col-10 block">
-            <input required autoFocus type="text" value={this.state.sub_name} className="form-control mb-2" placeholder="subname" onChange={this.handleSubNameChange}/>
+            <input required autoFocus type="text" value={this.state.sub_name} className="form-control mb-2" placeholder="subname" name="sub_name" onChange={this.handleChange}/>
           </div>
         </div>
 
@@ -96,8 +84,8 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faListAlt}/>
           </div>
           <div className="col-10 block">
-            <select name="category" onChange={this.handleCategoryChange} defaultValue={this.state.category}>
-              <option>Category</option>
+            <select name="category" onChange={this.handleChange}>
+              <option value="">Category</option>
               {categoryChoices.map((category, index) => (<option key={index} value={category}>{category}</option>))}
             </select>
           </div>
@@ -108,8 +96,8 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faLeaf} />
           </div>
           <div className="col-10">
-            <select name="type" onChange={this.handleTypeChange} defaultValue={this.state.production_type}>
-              <option>Production Type</option>
+            <select name="production_type" onChange={this.handleChange}>
+              <option value="">Production Type</option>
               {typeChoices.map((type, index) => (<option key={index} value={type}>{type}</option>))}
             </select>
           </div>
@@ -120,7 +108,7 @@ class FoodEntryForm extends React.Component {
             <FontAwesomeIcon icon={faStar} />
           </div>
           <div className="col-10">
-            <input required autoFocus type="text" value={this.state.grade} className="form-control mb-2" placeholder="health grade" onChange={this.handleGradeChange}/>
+            <input required autoFocus type="text" value={this.state.grade} className="form-control mb-2" name='grade' placeholder="health grade" onChange={this.handleChange}/>
           </div>
         </div>
 
