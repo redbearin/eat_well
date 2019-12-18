@@ -5,7 +5,7 @@ set_exception_handler('error_handler');
 require_once 'db_connection.php';
 
 $foodsQuery = "SELECT *
-              FROM foods";
+               FROM foods";
 
 $foodsResult = mysqli_query($conn, $foodsQuery);
 if (!$foodsResult) {

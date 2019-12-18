@@ -53,16 +53,17 @@ class App extends React.Component {
   }
 
   deleteFood(idToRemove) {
-    const request = {
-      method: 'DELETE'
+    const data = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(idToRemove)
     };
-    fetch(`/api/grades/${idToRemove}`, request)
-      .then(response => response.json())
-      .then(() => {
-        this.setState({
-          foods: this.state.foods.filter(element => element.id !== idToRemove)
-        });
-      });
+    fetch('/api/delete-food.php', data)
+      .catch(error => { throw (error); });
+
+    this.setState({
+      foods: this.state.foods.filter(food => parseInt(food.id) !== parseInt(idToRemove))
+    });
   }
 
   getAverageGrade() {
