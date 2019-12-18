@@ -11,8 +11,7 @@ class FoodEntryForm extends React.Component {
       sub_name: '',
       category: '',
       production_type: '',
-      grade: '',
-      shown: ''
+      grade: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
