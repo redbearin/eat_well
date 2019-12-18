@@ -27,7 +27,7 @@ class App extends React.Component {
       }),
       headers: { 'Content-Type': 'application/json' }
     };
-    fetch(`/api/foods.php`, data)
+    fetch('/api/foods.php', data)
       .then(response => response.json())
       .then(data => {
         this.setState({
@@ -44,12 +44,11 @@ class App extends React.Component {
       body: JSON.stringify(newFood)
     };
     fetch('/api/add-food.php', data)
+      .then(response => { })
+      .then(data => {
+        this.getFoods();
+      })
       .catch(error => { throw (error); });
-
-    const allFoods = this.state.foods.concat(newFood);
-    this.setState({
-      foods: allFoods
-    });
   }
 
   deleteFood(idToRemove) {
@@ -59,11 +58,11 @@ class App extends React.Component {
       body: JSON.stringify(idToRemove)
     };
     fetch('/api/delete-food.php', data)
+      .then(response => { })
+      .then(data => {
+        this.getFoods();
+      })
       .catch(error => { throw (error); });
-
-    this.setState({
-      foods: this.state.foods.filter(food => parseInt(food.id) !== parseInt(idToRemove))
-    });
   }
 
   getAverageGrade() {
