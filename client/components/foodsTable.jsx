@@ -3,7 +3,7 @@ import Food from './food';
 
 function FoodsTable(props) {
   if (props.ArrayOfFoods !== []) {
-    var studentElements = props.arrayOfFoods.map((food, index) => {
+    var foodElements = props.arrayOfFoods.map((food, index) => {
       return <Food key={index} specificFood={food} delete={props.delete} />;
     });
     return (
@@ -19,7 +19,7 @@ function FoodsTable(props) {
               <td scope="col" className="border border-dark">Operations</td>
             </tr>
           </thead>
-          <tbody>{studentElements}</tbody>
+          <tbody>{foodElements}</tbody>
         </table>
       </div>
     );
@@ -39,7 +39,7 @@ function FoodsTable(props) {
           <tbody>No grades Recorded</tbody>
           <tr>
             <td scope="col"></td>
-            <td scope="col">No grades recorded</td>
+            <td scope="col">No foods entered</td>
             <td scope="col"></td>
           </tr>
         </table>
