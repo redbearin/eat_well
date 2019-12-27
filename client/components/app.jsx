@@ -2,18 +2,41 @@ import React from 'react';
 import Header from './header';
 import FoodsTable from './foodsTable';
 import FoodEntryForm from './foodEntryForm';
-import Modal from './modal';
+import EntryModal from './entry-modal';
+import EditFoodModal from './edit-food-modal';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       foods: [],
-      modalOpen: true
+      modalOpen: true,
+      editFood: false,
+      name: '',
+      subName: '',
+      category: '',
+      productionType: '',
+      grade: null
     };
     this.getFoods = this.getFoods.bind(this);
     this.addFood = this.addFood.bind(this);
+    this.editFood = this.editFood.bind(this);
     this.deleteFood = this.deleteFood.bind(this);
+    this.openEditModal = this.openEditModal.bind(this);
+    this.handleFormEntry = this.handleFormEntry.bind(this);
+    this.closeEditModalClearInfo = this.closeEditModalClearInfo.bind(this);
+  }
+
+  closeEditModalClearInfo() {
+    this.setState({
+      editFood: false,
+      id: '',
+      name: '',
+      subName: '',
+      category: '',
+      productionType: '',
+      grade: null
+    });
   }
 
   componentDidMount() {
@@ -51,6 +74,42 @@ class App extends React.Component {
       .catch(error => { throw (error); });
   }
 
+  editFood() {
+    this.setState({
+      editFood: false
+    });
+    const data = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state.id)
+    };
+    fetch('/api/edit-food.php', data)
+      .then(response => { })
+      .then(data => {
+        this.getFoods();
+      })
+      .catch(error => { throw (error); });
+  }
+
+  handleFormEntry(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  openEditModal(idToEdit) {
+    var foodIndex = this.state.foods.findIndex(element => element.id === idToEdit);
+    this.setState({
+      editFood: true,
+      id: idToEdit,
+      name: this.state.foods[foodIndex].name,
+      subName: this.state.foods[foodIndex].sub_name,
+      category: this.state.foods[foodIndex].category,
+      productionType: this.state.foods[foodIndex].production_type,
+      grade: this.state.foods[foodIndex].grade
+    });
+  }
+
   deleteFood(idToRemove) {
     const data = {
       method: 'POST',
@@ -80,18 +139,60 @@ class App extends React.Component {
   }
 
   render() {
+    var typeChoices = ['Conventional', 'Organic', 'Non GMO Verified', 'Farmed (Fish)', 'Wild Caught'];
+
+    var categoryChoices = ['bakery item', 'beverage', 'confectionary', 'dairy product', 'egg', 'fat', 'fish', 'fruit', 'grain', 'meat', 'prepared food', 'spice', 'sweetener', 'vegetable'];
+
     return (
       <React.Fragment>
         <div className='container' style={{ display: this.state.modalOpen ? 'none' : 'block' }}>
           <Header averageGrade={this.getAverageGrade()}/>
           <div className="row">
-            <FoodsTable arrayOfFoods={this.state.foods} delete={this.deleteFood}/>
+            <FoodsTable arrayOfFoods={this.state.foods} delete={this.deleteFood}edit={this.openEditModal}/>
             <FoodEntryForm onSubmit={this.addFood}/>
           </div>
         </div>
-        <Modal open={this.state.modalOpen}>
+        <EntryModal open={this.state.modalOpen}>
           <button className= "modalCancelButton" onClick= {() => this.closeModal()}>Learn More</button>
-        </Modal>
+        </EntryModal>
+
+        <EditFoodModal showEditFoodModal={this.state.editFood}>
+          <div className="d-flex justify-content-center">
+            <form onSubmit={this.editFood}>
+              <div className="mt-5 ml-2 mr-2 mb-2">
+                <div className="title">Name</div>
+                <input type='text' name="name" defaultValue={this.state.name} contentEditable="true" onChange={this.handleFormEntry} />
+              </div>
+              <div className="m-2">
+                <div className="title">Subname</div>
+                <input type='text' name="subName" defaultValue={this.state.subName} contentEditable="true" onChange={this.handleFormEntry} />
+              </div>
+              <div className="m-2">
+                <div className="title">Category</div>
+                <select name="category" defaultValue={this.state.category} onChange={this.handleFormEntry}>
+                  <option>select category</option>
+                  {categoryChoices.map(index => (<option key={index} value={'' + index}>{index}</option>))}
+                </select>
+              </div>
+              <div className="m-2">
+                <div className="title">Production Type</div>
+                <select name="productionType" defaultValue={this.state.productionType} onChange={this.handleFormEntry}>
+                  <option>select production type</option>
+                  {typeChoices.map(index => (<option key={index} value={'' + index}>{index}</option>))}
+                </select>
+              </div>
+              <div className="m-2">
+                <div className="title">Grade</div>
+                <input type='text' name="grade" defaultValue={this.state.grade} contentEditable="true" onChange={this.handleFormEntry} />
+              </div>
+              <div className="mt-4 mr-2 ml-2 mb-5 d-flex justify-content-center">
+                <button className="btn-success mr-2" type='submit'>Submit</button>
+                <button className="btn-danger ml-2" type='reset' onClick={this.closeEditModalClearInfo}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </EditFoodModal>
+
       </React.Fragment>
     );
   }
