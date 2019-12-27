@@ -4,7 +4,7 @@ import Food from './food';
 function FoodsTable(props) {
   if (props.ArrayOfFoods !== []) {
     var foodElements = props.arrayOfFoods.map((food, index) => {
-      return <Food key={index} specificFood={food} delete={props.delete} />;
+      return <Food key={index} specificFood={food} delete={props.delete} edit={props.edit}/>;
     });
     return (
       <div className="table-responsive col-sm-8">

@@ -10,6 +10,7 @@ function Food(props) {
       <td className="border border-dark">{props.specificFood.grade}</td>
       <td className="border border-dark">
         <button className="shadow" type="delete" onClick={() => props.delete(props.specificFood.id)}>Delete</button>
+        <button className="shadow" type="delete" onClick={() => props.edit(props.specificFood.id)}>Edit</button>
       </td>
     </tr>
   );
