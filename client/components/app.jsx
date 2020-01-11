@@ -12,6 +12,7 @@ class App extends React.Component {
       foods: [],
       modalOpen: true,
       editFood: false,
+      id: '',
       name: '',
       subName: '',
       category: '',
@@ -19,45 +20,14 @@ class App extends React.Component {
       grade: null
     };
     this.getFoods = this.getFoods.bind(this);
+
     this.addFood = this.addFood.bind(this);
-    this.editFood = this.editFood.bind(this);
     this.deleteFood = this.deleteFood.bind(this);
+    this.updateFood = this.updateFood.bind(this);
+
     this.openEditModal = this.openEditModal.bind(this);
     this.handleFormEntry = this.handleFormEntry.bind(this);
     this.closeEditModalClearInfo = this.closeEditModalClearInfo.bind(this);
-  }
-
-  closeEditModalClearInfo() {
-    this.setState({
-      editFood: false,
-      id: '',
-      name: '',
-      subName: '',
-      category: '',
-      productionType: '',
-      grade: null
-    });
-  }
-
-  componentDidMount() {
-    this.getFoods();
-  }
-
-  getFoods() {
-    const data = {
-      method: 'POST',
-      body: JSON.stringify({
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    };
-    fetch('/api/foods.php', data)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          foods: data
-        });
-      })
-      .catch(error => { throw (error); });
   }
 
   addFood(newFood) {
@@ -74,40 +44,26 @@ class App extends React.Component {
       .catch(error => { throw (error); });
   }
 
-  editFood() {
+  closeEditModalClearInfo() {
     this.setState({
-      editFood: false
-    });
-    const data = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state.id)
-    };
-    fetch('/api/edit-food.php', data)
-      .then(response => { })
-      .then(data => {
-        this.getFoods();
-      })
-      .catch(error => { throw (error); });
-  }
-
-  handleFormEntry(event) {
-    this.setState({
-      [event.target.name]: event.target.value
+      editFood: false,
+      id: '',
+      name: '',
+      subName: '',
+      category: '',
+      productionType: '',
+      grade: null
     });
   }
 
-  openEditModal(idToEdit) {
-    var foodIndex = this.state.foods.findIndex(element => element.id === idToEdit);
+  closeModal() {
     this.setState({
-      editFood: true,
-      id: idToEdit,
-      name: this.state.foods[foodIndex].name,
-      subName: this.state.foods[foodIndex].sub_name,
-      category: this.state.foods[foodIndex].category,
-      productionType: this.state.foods[foodIndex].production_type,
-      grade: this.state.foods[foodIndex].grade
+      modalOpen: false
     });
+  }
+
+  componentDidMount() {
+    this.getFoods();
   }
 
   deleteFood(idToRemove) {
@@ -132,10 +88,65 @@ class App extends React.Component {
     return (sum / this.state.foods.length).toFixed(2);
   }
 
-  closeModal() {
+  getFoods() {
+    const data = {
+      method: 'POST',
+      body: JSON.stringify({
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch('/api/foods.php', data)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          foods: data
+        });
+      })
+      .catch(error => { throw (error); });
+  }
+
+  handleFormEntry(event) {
     this.setState({
-      modalOpen: false
+      [event.target.name]: event.target.value
     });
+  }
+
+  openEditModal(idToEdit) {
+    var foodIndex = this.state.foods.findIndex(element => element.id === idToEdit);
+    this.setState({
+      editFood: true,
+      id: idToEdit,
+      name: this.state.foods[foodIndex].name,
+      subName: this.state.foods[foodIndex].sub_name,
+      category: this.state.foods[foodIndex].category,
+      productionType: this.state.foods[foodIndex].production_type,
+      grade: this.state.foods[foodIndex].grade
+    });
+  }
+
+  updateFood(event) {
+    event.preventDefault();
+    this.setState({
+      editFood: false
+    });
+    const data = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: this.state.id,
+        name: this.state.name,
+        sub_name: this.state.subName,
+        category: this.state.category,
+        production_type: this.state.productionType,
+        grade: this.state.grade
+      })
+    };
+    fetch('/api/edit-food.php', data)
+      .then(response => { })
+      .then(data => {
+        this.getFoods();
+      })
+      .catch(error => { throw (error); });
   }
 
   render() {
@@ -152,13 +163,14 @@ class App extends React.Component {
             <FoodEntryForm onSubmit={this.addFood}/>
           </div>
         </div>
+
         <EntryModal open={this.state.modalOpen}>
           <button className= "modalCancelButton" onClick= {() => this.closeModal()}>Learn More</button>
         </EntryModal>
 
         <EditFoodModal showEditFoodModal={this.state.editFood}>
           <div className="d-flex justify-content-center">
-            <form onSubmit={this.editFood}>
+            <form onSubmit={this.updateFood}>
               <div className="mt-5 ml-2 mr-2 mb-2">
                 <div className="title">Name</div>
                 <input type='text' name="name" defaultValue={this.state.name} contentEditable="true" onChange={this.handleFormEntry} />
