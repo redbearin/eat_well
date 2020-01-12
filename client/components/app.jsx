@@ -150,7 +150,7 @@ class App extends React.Component {
   }
 
   render() {
-    var typeChoices = ['Conventional', 'Organic', 'Non GMO Verified', 'Farmed (Fish)', 'Wild Caught'];
+    var productionTypeChoices = ['Conventional', 'Organic', 'Non GMO Verified', 'Farmed (Fish)', 'Wild Caught'];
 
     var categoryChoices = ['bakery item', 'beverage', 'confectionary', 'dairy product', 'egg', 'fat', 'fish', 'fruit', 'grain', 'meat', 'prepared food', 'spice', 'sweetener', 'vegetable'];
 
@@ -181,16 +181,14 @@ class App extends React.Component {
               </div>
               <div className="m-2">
                 <div className="title">Category</div>
-                <select name="category" defaultValue={this.state.category} onChange={this.handleFormEntry}>
-                  <option>select category</option>
-                  {categoryChoices.map(index => (<option key={index} value={'' + index}>{index}</option>))}
+                <select name="category" value={this.state.category} onChange={this.handleFormEntry}>
+                  {categoryChoices.map(choice => (<option key={choice} value={choice}>{choice}</option>))}
                 </select>
               </div>
               <div className="m-2">
                 <div className="title">Production Type</div>
-                <select name="productionType" defaultValue={this.state.productionType} onChange={this.handleFormEntry}>
-                  <option>select production type</option>
-                  {typeChoices.map(index => (<option key={index} value={'' + index}>{index}</option>))}
+                <select name="productionType" value={this.state.productionType} onChange={this.handleFormEntry}>
+                  {productionTypeChoices.map(choice => (<option key={choice} value={ choice}>{choice}</option>))}
                 </select>
               </div>
               <div className="m-2">
