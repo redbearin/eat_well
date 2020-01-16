@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './header';
 import FoodsTable from './foodsTable';
 import FoodEntryForm from './foodEntryForm';
-import EntryModal from './entry-modal';
 import EditFoodModal from './edit-food-modal';
 
 class Admin extends React.Component {
@@ -53,12 +52,6 @@ class Admin extends React.Component {
       category: '',
       productionType: '',
       grade: null
-    });
-  }
-
-  closeModal() {
-    this.setState({
-      modalOpen: false
     });
   }
 
@@ -156,17 +149,13 @@ class Admin extends React.Component {
 
     return (
       <React.Fragment>
-        <div className='container' style={{ display: this.state.modalOpen ? 'none' : 'block' }}>
+        <div className='container'>
           <Header averageGrade={this.getAverageGrade()}/>
           <div className="row">
             <FoodsTable arrayOfFoods={this.state.foods} delete={this.deleteFood}edit={this.openEditModal}/>
             <FoodEntryForm onSubmit={this.addFood}/>
           </div>
         </div>
-
-        <EntryModal open={this.state.modalOpen}>
-          <button className= "modalCancelButton" onClick= {() => this.closeModal()}>Learn More</button>
-        </EntryModal>
 
         <EditFoodModal showEditFoodModal={this.state.editFood}>
           <div className="d-flex justify-content-center">
